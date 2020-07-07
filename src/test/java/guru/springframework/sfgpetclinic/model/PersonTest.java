@@ -1,11 +1,13 @@
 package guru.springframework.sfgpetclinic.model;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTest {
 
+    @DisplayName("Test grouped person properties")
     @Test
     public void groupedAssertions(){
         //given
@@ -16,6 +18,7 @@ class PersonTest {
                 () -> assertEquals("Smith", person.getLastName()));
     }
 
+    @DisplayName("Test exceptions in grouped assertions")
     @Test
     public void groupedAssertionsMessages(){
         //given

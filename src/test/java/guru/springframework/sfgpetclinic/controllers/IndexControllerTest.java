@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class IndexControllerTest {
 
     IndexController controller;
+    private org.assertj.core.api.Assertions assertJ;
 
     @BeforeEach
     void setUp() {
@@ -20,7 +21,8 @@ class IndexControllerTest {
     @DisplayName("Verify if correct view is returned")
     @Test
     void index() {
-        Assertions.assertEquals("index", controller.index(), "Wrong view returned");
+        assertEquals("index", controller.index(), "Wrong view returned");
+        org.assertj.core.api.Assertions.assertThat(controller.index()).isEqualTo("index");
     }
 
     @Test

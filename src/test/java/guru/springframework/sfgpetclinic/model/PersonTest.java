@@ -2,10 +2,12 @@ package guru.springframework.sfgpetclinic.model;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Tag("Model")
 class PersonTest {
 
     @DisplayName("Test grouped person properties")

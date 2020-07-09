@@ -45,6 +45,7 @@ class IndexControllerTest implements ControllerTest {
         System.out.println("I never got here!");
     }
 
+    @Disabled
     @Test
     void testAssumptionTrue(){
         assumeTrue("GURU".equalsIgnoreCase(System.getenv("GURU_RUNTIME")));

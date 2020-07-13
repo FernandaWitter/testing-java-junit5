@@ -26,7 +26,8 @@ class OwnerTest implements ModelTest {
                         () -> assertEquals("123-TARDIS", owner.getTelephone(), "Phone did not match")));
     }
 
-    @ParameterizedTest
+    @DisplayName("Value Source Test")
+    @ParameterizedTest(name = "{displayName} - [{index}] {arguments}")
     @ValueSource(strings = {"Spring", "Testing", "Guru"})
     void testValueSource(String val){
         System.out.println(val);

@@ -2,12 +2,15 @@ package guru.springframework.sfgpetclinic.services.springdatajpa;
 
 import guru.springframework.sfgpetclinic.model.Speciality;
 import guru.springframework.sfgpetclinic.repositories.SpecialtyRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class SpecialitySDJpaServiceTest {
@@ -17,6 +20,15 @@ class SpecialitySDJpaServiceTest {
 
     @InjectMocks
     SpecialitySDJpaService specialitySDJpaService;
+
+    @Test
+    void findByIdTest(){
+        Speciality speciality = new Speciality();
+        Mockito.when(specialtyRepository.findById(1L)).thenReturn(Optional.of(speciality));
+        Speciality foundSpecialty = specialitySDJpaService.findById(1L);
+        Assertions.assertNotNull(foundSpecialty);
+        Mockito.verify(specialtyRepository).findById(1L);
+    }
 
     @Test
     void deleteById() {

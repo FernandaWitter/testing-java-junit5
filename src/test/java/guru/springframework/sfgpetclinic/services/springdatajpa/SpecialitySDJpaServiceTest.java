@@ -5,6 +5,7 @@ import guru.springframework.sfgpetclinic.repositories.SpecialtyRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -28,6 +29,13 @@ class SpecialitySDJpaServiceTest {
         Speciality foundSpecialty = specialitySDJpaService.findById(1L);
         Assertions.assertNotNull(foundSpecialty);
         Mockito.verify(specialtyRepository).findById(1L);
+    }
+
+    @Test
+    void deleteByObjectTest(){
+        Speciality speciality = new Speciality();
+        specialitySDJpaService.delete(speciality);
+        Mockito.verify(specialtyRepository).delete(ArgumentMatchers.any(Speciality.class));
     }
 
     @Test

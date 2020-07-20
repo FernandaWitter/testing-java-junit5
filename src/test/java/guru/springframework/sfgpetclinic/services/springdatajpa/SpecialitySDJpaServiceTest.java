@@ -38,8 +38,8 @@ class SpecialitySDJpaServiceTest {
         Speciality foundSpecialty = specialitySDJpaService.findById(1L);
         // Then
         Assertions.assertNotNull(foundSpecialty);
-//        BDDMockito.then(specialtyRepository).should().findById(ArgumentMatchers.anyLong());
-        BDDMockito.then(specialtyRepository).should(Mockito.times(1)).findById(ArgumentMatchers.anyLong());
+        BDDMockito.then(specialtyRepository).should(Mockito.timeout(100)).findById(ArgumentMatchers.anyLong());
+//        BDDMockito.then(specialtyRepository).should(Mockito.times(1)).findById(ArgumentMatchers.anyLong());
 //        BDDMockito.then(specialtyRepository).shouldHaveNoInteractions();
     }
 
@@ -76,7 +76,7 @@ class SpecialitySDJpaServiceTest {
         specialitySDJpaService.deleteById(1L);
         specialitySDJpaService.deleteById(1L);
         // Then
-        BDDMockito.then(specialtyRepository).should(Mockito.times(2)).deleteById(1L);
+        BDDMockito.then(specialtyRepository).should(Mockito.timeout(100).times(2)).deleteById(1L);
     }
 
     @Test

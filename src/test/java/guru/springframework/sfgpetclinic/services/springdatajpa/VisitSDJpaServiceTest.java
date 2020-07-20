@@ -5,10 +5,7 @@ import guru.springframework.sfgpetclinic.repositories.VisitRepository;
 import net.bytebuddy.matcher.ElementMatchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
@@ -28,40 +25,53 @@ class VisitSDJpaServiceTest {
 
     @Test
     void findAll() {
+        // Given
         Set<Visit> visits = Set.of(new Visit(), new Visit());
-        Mockito.when(visitRepository.findAll()).thenReturn(visits);
+        BDDMockito.given(visitRepository.findAll()).willReturn(visits);
+        // When
         Set<Visit> foundVisits = service.findAll();
+        // Then
         assertEquals(2, foundVisits.size());
-        Mockito.verify(visitRepository, Mockito.atLeastOnce()).findAll();
+        BDDMockito.then(visitRepository).should().findAll();
     }
 
     @Test
     void findById() {
+        // Given
         Visit v1 = new Visit();
-        Mockito.when(visitRepository.findById(1L)).thenReturn(Optional.of(v1));
+        BDDMockito.given(visitRepository.findById(1L)).willReturn(Optional.of(v1));
+        // When
         Visit foundVisit = service.findById(1L);
+        // Then
         assertNotNull(foundVisit);
-        Mockito.verify(visitRepository, Mockito.atLeastOnce()).findById(ArgumentMatchers.anyLong());
+        BDDMockito.then(visitRepository).should(Mockito.atLeastOnce()).findById(ArgumentMatchers.anyLong());
     }
 
     @Test
     void save() {
+        // Given
         Visit v1 = new Visit();
-        Mockito.when(visitRepository.save(v1)).thenReturn(v1);
+        BDDMockito.given(visitRepository.save(v1)).willReturn(v1);
+        // When
         Visit savedVisit = service.save(v1);
+        // Then
         assertNotNull(savedVisit);
-        Mockito.verify(visitRepository, Mockito.atLeastOnce()).save(ArgumentMatchers.any(Visit.class));
+        BDDMockito.then(visitRepository).should(Mockito.atLeastOnce()).save(ArgumentMatchers.any(Visit.class));
     }
 
     @Test
     void delete() {
+        // When
         service.delete(new Visit());
-        Mockito.verify(visitRepository, Mockito.atLeastOnce()).delete(ArgumentMatchers.any(Visit.class));
+        // Then
+        BDDMockito.then(visitRepository).should(Mockito.atLeastOnce()).delete(ArgumentMatchers.any(Visit.class));
     }
 
     @Test
     void deleteById() {
+        // When
         service.deleteById(1L);
-        Mockito.verify(visitRepository, Mockito.atLeastOnce()).deleteById(ArgumentMatchers.anyLong());
+        // Then
+        BDDMockito.then(visitRepository).should(Mockito.atLeastOnce()).deleteById(ArgumentMatchers.anyLong());
     }
 }

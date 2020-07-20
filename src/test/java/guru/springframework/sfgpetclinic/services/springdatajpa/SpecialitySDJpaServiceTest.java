@@ -13,7 +13,8 @@ import java.util.Optional;
 @ExtendWith(MockitoExtension.class)
 class SpecialitySDJpaServiceTest {
 
-    @Mock
+    // Lenient = true accepts mismatched arguments in lambda expression
+    @Mock(lenient = true)
     SpecialtyRepository specialtyRepository;
 
     @InjectMocks
@@ -171,5 +172,39 @@ class SpecialitySDJpaServiceTest {
         BDDMockito.willThrow(new RuntimeException("boom!")).given(specialtyRepository).delete(ArgumentMatchers.any());
         Assertions.assertThrows(RuntimeException.class, () -> specialitySDJpaService.findById(1L));
         BDDMockito.then(specialtyRepository).should().delete(ArgumentMatchers.any());
+    }
+
+    @Test
+    void testSaveLambda(){
+        // Given
+        final String MATCH_ME = "MATCH_ME";
+        Speciality speciality = new Speciality();
+        speciality.setDescription(MATCH_ME);
+
+        Speciality savedSpecialty = new Speciality();
+        savedSpecialty.setId(1L);
+        // Mock to only return on match MATCH_ME string
+        BDDMockito.given(specialtyRepository.save(ArgumentMatchers.argThat(argument -> argument.getDescription().equals(MATCH_ME)))).willReturn(savedSpecialty);
+        // When
+        Speciality returnedSpeciality = specialitySDJpaService.save(speciality);
+        // Then
+        org.assertj.core.api.Assertions.assertThat(returnedSpeciality.getId()).isEqualTo(1L);
+    }
+
+    @Test
+    void testSaveLambdaNoMatch(){
+        // Given
+        final String MATCH_ME = "MATCH_ME";
+        Speciality speciality = new Speciality();
+        speciality.setDescription("Not a match");
+
+        Speciality savedSpecialty = new Speciality();
+        savedSpecialty.setId(1L);
+        // Mock to only return on match MATCH_ME string
+        BDDMockito.given(specialtyRepository.save(ArgumentMatchers.argThat(argument -> argument.getDescription().equals(MATCH_ME)))).willReturn(savedSpecialty);
+        // When
+        Speciality returnedSpeciality = specialitySDJpaService.save(speciality);
+        // Then
+        Assertions.assertNull(returnedSpeciality);
     }
 }

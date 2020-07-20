@@ -31,10 +31,15 @@ class SpecialitySDJpaServiceTest {
     @Test
     void findByIdBddTest(){
         Speciality speciality = new Speciality();
+        // Given
         BDDMockito.given(specialtyRepository.findById(1L)).willReturn(Optional.of(speciality));
+        // When
         Speciality foundSpecialty = specialitySDJpaService.findById(1L);
+        // Then
         Assertions.assertNotNull(foundSpecialty);
-        Mockito.verify(specialtyRepository).findById(1L);
+//        BDDMockito.then(specialtyRepository).should().findById(ArgumentMatchers.anyLong());
+        BDDMockito.then(specialtyRepository).should(Mockito.times(1)).findById(ArgumentMatchers.anyLong());
+//        BDDMockito.then(specialtyRepository).shouldHaveNoInteractions();
     }
 
     @Test

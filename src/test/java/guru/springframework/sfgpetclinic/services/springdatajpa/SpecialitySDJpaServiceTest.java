@@ -152,4 +152,24 @@ class SpecialitySDJpaServiceTest {
         BDDMockito.then(specialtyRepository).should().delete(ArgumentMatchers.any(Speciality.class));
     }
 
+    @Test
+    void testDoThrow(){
+        Mockito.doThrow(new RuntimeException("boom!")).when(specialtyRepository).delete(ArgumentMatchers.any());
+        Assertions.assertThrows(RuntimeException.class, () -> specialtyRepository.delete(new Speciality()));
+        Mockito.verify(specialtyRepository).delete(ArgumentMatchers.any());
+    }
+
+    @Test
+    void testFindByIdThrows(){
+        BDDMockito.given(specialtyRepository.findById(1L)).willThrow(new RuntimeException("boom!"));
+        Assertions.assertThrows(RuntimeException.class, () -> specialitySDJpaService.findById(1L));
+        BDDMockito.then(specialtyRepository).should().findById(1L);
+    }
+
+    @Test
+    void testDeleteBDD(){
+        BDDMockito.willThrow(new RuntimeException("boom!")).given(specialtyRepository).delete(ArgumentMatchers.any());
+        Assertions.assertThrows(RuntimeException.class, () -> specialitySDJpaService.findById(1L));
+        BDDMockito.then(specialtyRepository).should().delete(ArgumentMatchers.any());
+    }
 }

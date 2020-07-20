@@ -17,7 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OwnerControllerTest {
@@ -79,6 +79,7 @@ class OwnerControllerTest {
         // in order verification
         inOrder.verify(ownerService).findAllByLastNameLike(anyString());
         inOrder.verify(model).addAttribute(anyString(), anyList());
+        verifyNoMoreInteractions(model);
     }
 
     @Test
@@ -92,6 +93,7 @@ class OwnerControllerTest {
         //then
         Assertions.assertThat("%Buck%").isEqualToIgnoringCase(stringArgumentCaptor.getValue());
         Assertions.assertThat("redirect:/owners/1").isEqualToIgnoringCase(viewName);
+        verifyNoInteractions(model);
     }
 
 
@@ -106,9 +108,8 @@ class OwnerControllerTest {
         //then
         Assertions.assertThat("%DontFindMe%").isEqualToIgnoringCase(stringArgumentCaptor.getValue());
         Assertions.assertThat("owners/findOwners").isEqualToIgnoringCase(viewName);
+        verifyNoInteractions(model);
     }
-
-//    x
 
     @Test
     void processCreationFormHasErrors() {
